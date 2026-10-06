@@ -1,0 +1,1126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Apply for free study abroad counselling with TASA Grassroots. Trusted by 1274+ partner universities for 36+ years." />
+  <title>Study Abroad Application | TASA Grassroots</title>
+  <style>
+    :root {
+      --primary: #4154f1;
+      --primary-hover: #3a48d9;
+      --primary-soft: #eef0fd;
+      --primary-border: #c7cbf9;
+      --success: #2eca6a;
+      --success-soft: #e8f9ef;
+      --danger: #ff4d4d;
+      --danger-soft: #fff0f0;
+      --warning: #ff9f43;
+      --warning-soft: #fff4e6;
+      --text-1: #212529;
+      --text-2: #444444;
+      --text-3: #6c757d;
+      --border: #e5e7eb;
+      --border-strong: #d1d5db;
+      --surface: #ffffff;
+      --bg: #f6f8fb;
+      --radius: 20px;
+      --shadow: 0 12px 32px rgba(16, 24, 40, 0.07);
+      --font: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+
+    /* Self-hosted Manrope (no external font dependency) */
+    @font-face {
+      font-family: 'Manrope';
+      src: url('./client/public/fonts/Manrope-VariableFont_wght.ttf') format('truetype');
+      font-weight: 200 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: var(--font);
+      color: var(--text-1);
+      background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 340px);
+      min-height: 100vh;
+    }
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero { text-align: center; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.95rem;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      border: 1px solid var(--primary-border);
+      color: var(--primary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.9rem, 5vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin: 1rem 0 0.6rem;
+      color: var(--text-1);
+    }
+
+    .hero-sub {
+      color: var(--text-3);
+      font-size: 1.02rem;
+      line-height: 1.6;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.1rem;
+    }
+
+    .hero-chips .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-2);
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .hero-chips .chip i { color: var(--success); font-size: 0.9rem; }
+
+    /* ── Card ────────────────────────────────────────────────── */
+    .app-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .app-card .card-body { padding: 1.5rem 1.25rem 0.5rem; }
+    @media (min-width: 768px) {
+      .app-card .card-body { padding: 2.25rem 2.5rem 1rem; }
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 700;
+      font-size: 1.02rem;
+      color: var(--text-1);
+      margin: 0 0 0.35rem;
+    }
+
+    .section-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .section-hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      opacity: 1;
+      margin: 0 0 1.25rem;
+    }
+
+    /* ── Form controls ───────────────────────────────────────── */
+    .form-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-2);
+      margin-bottom: 0.4rem;
+    }
+
+    .req { color: var(--danger); }
+
+    .form-control,
+    .form-select {
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 0.62rem 0.85rem;
+      font-size: 0.95rem;
+      color: var(--text-1);
+      background-color: #fff;
+      min-width: 0;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .form-control::placeholder { color: #9aa4b2; }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-soft);
+    }
+
+    .form-control.is-invalid,
+    .form-select.is-invalid {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px var(--danger-soft);
+    }
+
+    .form-control.is-valid,
+    .form-select.is-valid {
+      border-color: var(--success);
+    }
+
+    .invalid-feedback {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.3rem;
+      margin-top: 0.35rem;
+      font-size: 0.8rem;
+      color: var(--danger);
+    }
+
+    .invalid-feedback::before {
+      content: '\F334';
+      font-family: 'bootstrap-icons';
+      line-height: 1;
+      margin-top: 0.15rem;
+    }
+
+    .dup-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.3rem;
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--warning);
+      font-weight: 600;
+    }
+
+    .dup-note i { margin-top: 0.15rem; }
+
+    /* ── Buttons ─────────────────────────────────────────────── */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.7rem 1.5rem;
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(65, 84, 241, 0.28);
+      transition: filter 0.15s ease, transform 0.15s ease;
+    }
+
+    .btn-primary:hover:not(:disabled),
+    .btn-primary:focus-visible:not(:disabled) {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled { opacity: 0.65; box-shadow: none; }
+
+    .btn-outline {
+      background: #fff;
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.7rem 1.5rem;
+      color: var(--text-2);
+      transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-outline:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+    .btn-outline:disabled { opacity: 0.6; }
+
+    .btn:focus-visible,
+    .form-check-input:focus-visible {
+      outline: 3px solid var(--primary-soft);
+      outline-offset: 1px;
+    }
+
+    /* ── Duplicate confirmation panel ────────────────────────── */
+    .confirm-panel {
+      background: var(--warning-soft);
+      border: 1px solid var(--warning);
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      display: flex;
+      gap: 0.9rem;
+      align-items: flex-start;
+    }
+
+    .confirm-panel .cp-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--warning);
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .confirm-panel .cp-title { font-weight: 700; font-size: 0.95rem; margin: 0 0 0.25rem; }
+    .confirm-panel .cp-text { font-size: 0.85rem; color: var(--text-2); margin: 0; line-height: 1.55; }
+
+    .confirm-panel .form-check-input:checked {
+      background-color: var(--warning);
+      border-color: var(--warning);
+    }
+
+    .confirm-panel .form-check-label { font-size: 0.88rem; font-weight: 600; }
+
+    /* ── Alerts ──────────────────────────────────────────────── */
+    .app-alert {
+      border-radius: 12px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin: 0;
+    }
+
+    .app-alert i { margin-top: 0.15rem; }
+
+    /* ── Success panel ───────────────────────────────────────── */
+    .thanks-card { text-align: center; padding: 2.25rem 1rem 2.5rem; }
+    @media (min-width: 768px) { .thanks-card { padding: 2.75rem 2rem 3rem; } }
+
+    .check-ring {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: var(--success-soft);
+      color: var(--success);
+      font-size: 2.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.1rem;
+      animation: pop 0.45s cubic-bezier(0.18, 1.25, 0.4, 1);
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.4); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    .thanks-card h2 { font-size: 1.4rem; font-weight: 800; margin: 0 0 0.4rem; }
+    .thanks-card .thanks-sub { color: var(--text-3); margin: 0 auto 1.25rem; max-width: 420px; line-height: 1.6; }
+
+    .ref-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: var(--primary-soft);
+      border: 1px solid var(--primary-border);
+      color: var(--primary);
+      border-radius: 12px;
+      padding: 0.6rem 0.8rem 0.6rem 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .ref-chip .ref-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+    .ref-chip .ref-value { font-size: 1rem; font-weight: 800; }
+
+    .btn-copy {
+      background: var(--surface);
+      border: 1px solid var(--primary-border);
+      color: var(--primary);
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.7rem;
+    }
+
+    .btn-copy:hover { background: var(--primary-soft); }
+
+    .next-steps {
+      text-align: left;
+      max-width: 480px;
+      margin: 0 auto 1.75rem;
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .next-step { display: flex; gap: 0.9rem; align-items: flex-start; }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .next-step p { margin: 0; font-size: 0.88rem; color: var(--text-2); line-height: 1.55; }
+    .next-step p strong { color: var(--text-1); display: block; font-size: 0.92rem; }
+
+    /* ── Card footer (actions) ──────────────────────────────── */
+    .app-footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      padding: 1rem 1.25rem 1.25rem;
+      background: #fbfcfe;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (min-width: 768px) {
+      .app-footer-actions { padding: 1.25rem 2.5rem 1.5rem; }
+    }
+
+    /* ── Page footer ─────────────────────────────────────────── */
+    .page-footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 1rem 1rem;
+      flex-shrink: 0;
+    }
+
+    .page-footer .footer-inner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.85rem;
+      color: var(--text-3);
+    }
+
+    .page-footer .footer-logo { height: 30px; width: auto; }
+
+    /* ── Mobile refinements ──────────────────────────────────── */
+    @media (max-width: 575.98px) {
+      .app-card .card-body { padding: 1.25rem 1rem 0.25rem; }
+      .app-footer-actions { flex-direction: column; align-items: stretch; padding: 1rem 1rem 1.15rem; }
+      .app-footer-actions .btn { width: 100%; }
+      .hero h1 { margin-top: 0.85rem; }
+      .confirm-panel { flex-direction: column; }
+      .confirm-panel .cp-icon { width: 34px; height: 34px; }
+      .btn-copy { padding: 0.4rem 0.8rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+<body class="min-vh-100 d-flex flex-column">
+
+  <!-- ══ Main ══ -->
+  <main class="flex-grow-1 py-4 py-md-5">
+    <div class="container">
+
+      <!-- ── Hero ────────────────────────────────────────────── -->
+      <div class="hero mx-auto mb-4 mb-md-5">
+        <!-- <span class="hero-badge">
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+          Free counselling
+        </span> -->
+        <h1>Ready to Study Abroad?</h1>
+        <p class="hero-sub">
+          Tell us about your profile and one of our counsellors will reach out with
+          course, university and application guidance 
+        </p>
+        <div class="hero-chips" aria-label="Why choose TASA Grassroots">
+          <span class="chip"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> 36+ Years of Excellence</span>
+          <span class="chip"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> 1274+ Partner Universities</span>
+          <span class="chip"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Personalised Guidance</span>
+        </div>
+      </div>
+
+      <!-- ── Application card ────────────────────────────────── -->
+      <div class="mx-auto mt-4 mt-md-5" style="max-width: 1100px;">
+        <div class="app-card">
+
+          <!-- ── Alert (errors / final messages) ── -->
+          <div id="wa-alert" class="alert app-alert d-none mt-3 mx-3 mb-0" role="alert" aria-live="assertive"></div>
+
+          <!-- ── Thank-you / success panel ── -->
+          <div id="wa-thanks" class="thanks-card d-none">
+            <div class="check-ring" aria-hidden="true"><i class="bi bi-check-lg"></i></div>
+            <h2 tabindex="-1" id="wa-thanks-title">Application Submitted</h2>
+            <p class="thanks-sub">
+              Thank you! Your study abroad application has been received.
+              A counsellor will contact you shortly.
+            </p>
+
+            <div class="ref-chip">
+              <span class="ref-label">Reference ID</span>
+              <span class="ref-value" id="wa-thanks-ref"></span>
+              <button type="button" id="wa-copy-ref" class="btn-copy" aria-label="Copy reference ID">
+                <i class="bi bi-clipboard me-1" aria-hidden="true"></i>Copy
+              </button>
+            </div>
+
+            <div class="next-steps" aria-label="What happens next">
+              <div class="next-step">
+                <span class="step-num" aria-hidden="true">1</span>
+                <p><strong>Review</strong>Our counsellors review your profile and requirements.</p>
+              </div>
+              <div class="next-step">
+                <span class="step-num" aria-hidden="true">2</span>
+                <p><strong>Contact</strong>We reach out on your mobile or email within 24–48 hours.</p>
+              </div>
+              <div class="next-step">
+                <span class="step-num" aria-hidden="true">3</span>
+                <p><strong>Guidance</strong>Get free advice on courses, universities and your application.</p>
+              </div>
+            </div>
+
+            <button type="button" id="wa-again" class="btn btn-primary">
+              <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>Submit another enquiry
+            </button>
+          </div>
+
+          <!-- ── Lead form ── -->
+          <form id="wa-form" novalidate>
+            <div class="card-body">
+
+              <!-- ── Personal Information ─────────────────────── -->
+              <section aria-label="Personal information">
+                <h2 class="section-title">
+                  <span class="section-icon" aria-hidden="true"><i class="bi bi-person"></i></span>
+                  Personal Information
+                </h2>
+                <hr class="section-hr" />
+
+                <div class="row g-3 g-md-4">
+                  <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    <label class="form-label" for="wa-name">Student name <span class="req">*</span></label>
+                    <input id="wa-name" class="form-control" placeholder="e.g. John Doe" autocomplete="name"
+                           aria-describedby="wa-name-feedback wa-name-dup" />
+                    <div class="invalid-feedback" id="wa-name-feedback" role="alert" aria-live="polite"></div>
+                    <div class="dup-note d-none" id="wa-name-dup"></div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    <label class="form-label" for="wa-gender">Gender</label>
+                    <select id="wa-gender" class="form-select">
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    <label class="form-label" for="wa-phone">Mobile number <span class="req">*</span></label>
+                    <input id="wa-phone" class="form-control" type="tel" inputmode="tel" placeholder="9xxxx xxxxx"
+                           autocomplete="tel" aria-describedby="wa-phone-feedback wa-phone-dup" />
+                    <div class="invalid-feedback" id="wa-phone-feedback" role="alert" aria-live="polite"></div>
+                    <div class="dup-note d-none" id="wa-phone-dup">
+                      <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+                      This mobile number was already used for an enquiry.
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    <label class="form-label" for="wa-email">Email address</label>
+                    <input id="wa-email" class="form-control" type="email" inputmode="email" placeholder="student@example.com"
+                           autocomplete="email" aria-describedby="wa-email-feedback wa-email-dup" />
+                    <div class="invalid-feedback" id="wa-email-feedback" role="alert" aria-live="polite"></div>
+                    <div class="dup-note d-none" id="wa-email-dup">
+                      <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+                      This email address was already used for an enquiry.
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    <label class="form-label" for="wa-country">Country interested <span class="req">*</span></label>
+                    <select id="wa-country" class="form-select" aria-describedby="wa-country-feedback"></select>
+                    <div class="invalid-feedback" id="wa-country-feedback" role="alert" aria-live="polite"></div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    <label class="form-label" for="wa-intake">Intake <span class="req">*</span></label>
+                    <select id="wa-intake" class="form-select" aria-describedby="wa-intake-feedback"></select>
+                    <div class="invalid-feedback" id="wa-intake-feedback" role="alert" aria-live="polite"></div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ── Academic Information ─────────────────────── -->
+              <section class="pt-4 mt-4" aria-label="Academic information">
+                <h2 class="section-title">
+                  <span class="section-icon" aria-hidden="true"><i class="bi bi-mortarboard"></i></span>
+                  Academic Information
+                </h2>
+                <hr class="section-hr" />
+
+                <div class="row g-3 g-md-4">
+                  <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    <label class="form-label" for="wa-education">Highest education <span class="req">*</span></label>
+                    <select id="wa-education" class="form-select" aria-describedby="wa-education-feedback"></select>
+                    <div class="invalid-feedback" id="wa-education-feedback" role="alert" aria-live="polite"></div>
+                    <input id="wa-education-other" class="form-control d-none mt-2" placeholder="Specify your education"
+                           aria-label="Other education" aria-describedby="wa-education-other-feedback" />
+                    <div class="invalid-feedback" id="wa-education-other-feedback" role="alert" aria-live="polite"></div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    <label class="form-label" for="wa-college">College / university</label>
+                    <input id="wa-college" class="form-control" placeholder="Institution name"
+                           autocomplete="organization" aria-describedby="wa-college-feedback" />
+                    <div class="invalid-feedback" id="wa-college-feedback" role="alert" aria-live="polite"></div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    <label class="form-label" for="wa-passing">Year of passing</label>
+                    <input id="wa-passing" class="form-control" inputmode="numeric" placeholder="e.g. 2024"
+                           aria-describedby="wa-passing-feedback" />
+                    <div class="invalid-feedback" id="wa-passing-feedback" role="alert" aria-live="polite"></div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    <label class="form-label" for="wa-gpa">GPA </label>
+                    <input id="wa-gpa" class="form-control" inputmode="decimal" placeholder="e.g. 8.2 "
+                           aria-describedby="wa-gpa-feedback" />
+                    <div class="invalid-feedback" id="wa-gpa-feedback" role="alert" aria-live="polite"></div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ── Duplicate confirmation panel ─────────────── -->
+              <div id="wa-dup-panel" class="confirm-panel d-none mt-4" role="alert" aria-live="polite">
+                <div class="cp-icon" aria-hidden="true"><i class="bi bi-exclamation-triangle-fill"></i></div>
+                <div>
+                  <p class="cp-title">An enquiry with these contact details may already exist.</p>
+                  <p class="cp-text">
+                    It looks like this mobile number or email was already used for an enquiry.
+                    If this is a new application, please confirm below to submit it anyway —
+                    otherwise our counsellors will contact you on the details you provided.
+                  </p>
+                  <div class="form-check mt-2">
+                    <input class="form-check-input" type="checkbox" id="wa-dup-confirm" />
+                    <label class="form-check-label" for="wa-dup-confirm">
+                      I confirm this is a new application
+                    </label>
+                  </div>
+                  <div class="d-flex flex-wrap gap-2 mt-2">
+                    <button type="button" id="wa-dup-submit" class="btn btn-primary btn-sm" disabled>
+                      <i class="bi bi-send me-1" aria-hidden="true"></i>Submit anyway
+                    </button>
+                    <button type="button" id="wa-dup-dismiss" class="btn btn-outline btn-sm">Not now</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Actions ─────────────────────────────────────── -->
+            <div class="app-footer-actions">
+              <button type="button" id="wa-reset" class="btn btn-outline">Reset</button>
+              <button type="submit" id="wa-submit" class="btn btn-primary">
+                <i class="bi bi-send me-1" aria-hidden="true"></i>Submit Application
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ══ Footer ══ -->
+<footer class="page-footer" role="contentinfo">
+  <div class="footer-inner">
+    <span>Powered by Grassroots</span>
+    <!-- <img
+      src="https://raw.githubusercontent.com/tasa-grssl/logo/main/Tasa%20grassroots%20logo%20-%20final.png"
+      alt="Grassroots"
+      class="footer-logo"
+      onerror="this.style.display='none'" />
+  </div> -->
+</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      const API_BASE = 'http://164.52.223.98:5155';
+      const API_URL = API_BASE + '/api/leads/whatsapp';
+      const CHECK_URL = API_BASE + '/api/leads/check-mobile';
+
+      /* ── Static option lists (mirror LeadManagement.jsx) ────── */
+      const COUNTRIES = ["Canada", "United States", "United Kingdom", "Australia", "New Zealand", "Ireland", "Germany", "France", "Netherlands", "Sweden", "Finland", "Norway", "Denmark", "Switzerland", "Italy", "Spain", "Poland", "UAE", "Singapore", "Malaysia"];
+
+      const EDUCATION = ["Bachelor's Degree", "Master's Degree", 'Diploma', '12th / HSC', 'Other'];
+      const INTAKES = ['Spring 2027', 'Summer 2027', 'Fall 2027', 'Spring 2028'];
+
+      /* ── DOM refs ────────────────────────────────────────────── */
+      const formEl = document.getElementById('wa-form');
+      const submitBtn = document.getElementById('wa-submit');
+      const resetBtn = document.getElementById('wa-reset');
+      const alertEl = document.getElementById('wa-alert');
+      const thanksEl = document.getElementById('wa-thanks');
+      const thanksTitleEl = document.getElementById('wa-thanks-title');
+      const thanksRefEl = document.getElementById('wa-thanks-ref');
+      const copyBtn = document.getElementById('wa-copy-ref');
+      const againBtn = document.getElementById('wa-again');
+      const dupPanel = document.getElementById('wa-dup-panel');
+      const dupConfirmCheckbox = document.getElementById('wa-dup-confirm');
+      const dupSubmitBtn = document.getElementById('wa-dup-submit');
+      const dupDismissBtn = document.getElementById('wa-dup-dismiss');
+      const phoneEl = document.getElementById('wa-phone');
+      const emailEl = document.getElementById('wa-email');
+      const educationSelect = document.getElementById('wa-education');
+      const educationOther = document.getElementById('wa-education-other');
+
+      const phoneDupNote = document.getElementById('wa-phone-dup');
+      const emailDupNote = document.getElementById('wa-email-dup');
+
+      /* ── Populate selects ───────────────────────────────────── */
+      const fillSelect = (id, options, placeholder) => {
+        const el = document.getElementById(id);
+        el.innerHTML = '';
+        const ph = document.createElement('option');
+        ph.value = '';
+        ph.textContent = placeholder;
+        el.appendChild(ph);
+        options.forEach((opt) => {
+          const o = document.createElement('option');
+          o.value = opt;
+          o.textContent = opt;
+          el.appendChild(o);
+        });
+      };
+
+      fillSelect('wa-country', COUNTRIES, '— Select —');
+      fillSelect('wa-education', EDUCATION, '— Select —');
+      fillSelect('wa-intake', INTAKES, '— Select Intake —');
+
+      /* ── "Other" education → show free-text input ───────────── */
+      educationSelect.addEventListener('change', () => {
+        const isOther = educationSelect.value === 'Other';
+        educationOther.classList.toggle('d-none', !isOther);
+        if (!isOther) {
+          educationOther.value = '';
+          educationOther.classList.remove('is-invalid');
+          document.getElementById('wa-education-other-feedback').textContent = '';
+        }
+      });
+
+      /* ── Client-side validation ─────────────────────────────── */
+      const phoneDigits = (v) => {
+        let d = String(v).replace(/[^\d]/g, '');
+        if (d.length === 12 && d.startsWith('91')) d = d.slice(2);
+        return d;
+      };
+
+      const validators = {
+        'wa-name': {
+          validate: (v) => {
+            const t = String(v).trim();
+            return t.length >= 2 && t.length <= 100 && /^[\p{L}][\p{L}\s'.-]*$/u.test(t);
+          },
+          message: 'Please enter a valid name (2–100 characters, letters only).',
+        },
+        'wa-phone': {
+          validate: (v) => /^[6-9]\d{9}$/.test(phoneDigits(v)),
+          message: 'Please enter a valid 10-digit mobile number.',
+        },
+        'wa-email': {
+          validate: (v) => {
+            const t = String(v).trim();
+            return t === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t);
+          },
+          message: 'Please enter a valid email address.',
+        },
+        'wa-country': { validate: (v) => v !== '', message: 'Please select a country.' },
+        'wa-intake': { validate: (v) => v !== '', message: 'Please select an intake.' },
+        'wa-education': { validate: (v) => v !== '', message: 'Please select your highest education.' },
+        'wa-college': {
+          validate: (v) => {
+            const t = String(v).trim();
+            return t === '' || (t.length >= 2 && t.length <= 150);
+          },
+          message: 'College name must be between 2 and 150 characters.',
+        },
+        'wa-passing': {
+          validate: (v) => {
+            const t = String(v).trim();
+            if (t === '') return true;
+            if (!/^\d{4}$/.test(t)) return false;
+            const yr = Number(t);
+            const max = new Date().getFullYear() + 8;
+            return yr >= 1990 && yr <= max;
+          },
+          message: 'Enter a valid 4-digit year between 1990 and ' + (new Date().getFullYear() + 8) + '.',
+        },
+        'wa-gpa': {
+          validate: (v) => {
+            const t = String(v).trim();
+            if (t === '') return true;
+            const m = t.match(/^(\d{1,3}(?:\.\d{1,2})?)\s*(?:\/\s*10|%|CGPA)?$/i);
+            if (!m) return false;
+            const num = Number(m[1]);
+            return num >= 0 && num <= 100;
+          },
+          message: 'Enter a valid GPA or percentage, e.g. 8.2, 8.2/10, 82%, 9.1 CGPA.',
+        },
+      };
+
+      const setFieldState = (id, ok, message) => {
+        const el = document.getElementById(id);
+        const rule = validators[id];
+        if (!el) return;
+        el.classList.toggle('is-invalid', !ok);
+        el.classList.toggle('is-valid', ok && String(el.value).trim() !== '');
+        el.setAttribute('aria-invalid', ok ? 'false' : 'true');
+        const fb = document.getElementById(id + '-feedback');
+        if (fb) fb.textContent = ok ? '' : (message || (rule && rule.message) || '');
+      };
+
+      const touched = new Set();
+
+      const validateField = (id) => {
+        const el = document.getElementById(id);
+        const rule = validators[id];
+        if (!el || !rule || !touched.has(id)) return true;
+        const ok = rule.validate(el.value);
+        setFieldState(id, ok, rule.message);
+        return ok;
+      };
+
+      const validateForm = () => {
+        Object.keys(validators).forEach((id) => {
+          touched.add(id);
+          validateField(id);
+        });
+
+        // "Other" education must have a free-text value on submit.
+        let otherOk = true;
+        if (educationSelect.value === 'Other') {
+          const other = String(educationOther.value).trim();
+          otherOk = other.length >= 2 && other.length <= 150;
+          educationOther.classList.toggle('is-invalid', !otherOk);
+          educationOther.setAttribute('aria-invalid', String(!otherOk));
+          document.getElementById('wa-education-other-feedback').textContent =
+            otherOk ? '' : (other ? 'Please specify your education (2–150 characters).' : 'Please specify your education.');
+        }
+
+        return Object.keys(validators)
+          .filter((id) => !validateField(id))
+          .concat(otherOk ? [] : ['wa-education-other']);
+      };
+
+      const clearValidation = () => {
+        touched.clear();
+        hideDupNotes();
+        Object.keys(validators).forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.classList.remove('is-valid', 'is-invalid');
+            el.removeAttribute('aria-invalid');
+          }
+          const fb = document.getElementById(id + '-feedback');
+          if (fb) fb.textContent = '';
+        });
+        educationOther.classList.remove('is-invalid');
+        educationOther.removeAttribute('aria-invalid');
+        document.getElementById('wa-education-other-feedback').textContent = '';
+      };
+
+      /* ── Duplicate detection (client pre-check + confirm flow) ── */
+      let duplicateConfirmed = false;
+
+      const checkDuplicate = async () => {
+        const params = new URLSearchParams();
+        if (phoneEl.value.trim()) params.set('phone', phoneEl.value.trim());
+        if (emailEl.value.trim()) params.set('email', emailEl.value.trim());
+        if (!params.size) return null;
+        try {
+          const res = await fetch(CHECK_URL + '?' + params.toString(), {
+            headers: { 'Accept': 'application/json' },
+          });
+          const json = await res.json();
+          return json && json.data ? json.data : null;
+        } catch (err) {
+          return null; // network hiccup — the server stays authoritative
+        }
+      };
+
+      const hideDupNotes = () => {
+        phoneDupNote.classList.add('d-none');
+        emailDupNote.classList.add('d-none');
+      };
+
+      const showDupNotes = (matchedBy) => {
+        if (!Array.isArray(matchedBy)) return;
+        phoneDupNote.classList.toggle('d-none', !matchedBy.includes('phone'));
+        emailDupNote.classList.toggle('d-none', !matchedBy.includes('email'));
+      };
+
+      const showDupPanel = () => {
+        duplicateConfirmed = false;
+        dupConfirmCheckbox.checked = false;
+        dupSubmitBtn.disabled = true;
+        dupPanel.classList.remove('d-none');
+        dupPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        dupConfirmCheckbox.focus();
+      };
+
+      const hideDupPanel = () => {
+        dupPanel.classList.add('d-none');
+      };
+
+      dupConfirmCheckbox.addEventListener('change', () => {
+        dupSubmitBtn.disabled = !dupConfirmCheckbox.checked;
+      });
+
+      dupSubmitBtn.addEventListener('click', () => {
+        duplicateConfirmed = true;
+        hideDupPanel();
+        formEl.requestSubmit();
+      });
+
+      dupDismissBtn.addEventListener('click', () => {
+        hideDupPanel();
+        duplicateConfirmed = false;
+      });
+
+      const debounce = (fn, ms) => {
+        let t;
+        return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+      };
+
+      const runDuplicateHint = debounce(async () => {
+        const data = await checkDuplicate();
+        showDupNotes(data ? data.matchedBy : []);
+      }, 450);
+
+      /* ── Per-field events ───────────────────────────────────── */
+      Object.keys(validators).forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('blur', () => {
+          touched.add(id);
+          validateField(id);
+          if (id === 'wa-phone' || id === 'wa-email') runDuplicateHint();
+        });
+        el.addEventListener('change', () => { if (touched.has(id)) validateField(id); });
+        el.addEventListener('input', () => {
+          if (id === 'wa-phone') {
+            phoneEl.value = phoneEl.value.replace(/ /g, '');
+            phoneDupNote.classList.add('d-none');
+            duplicateConfirmed = false;
+          }
+          if (id === 'wa-email') {
+            emailDupNote.classList.add('d-none');
+            duplicateConfirmed = false;
+          }
+          if (touched.has(id)) validateField(id);
+        });
+      });
+
+      educationOther.addEventListener('blur', () => {
+        if (educationSelect.value === 'Other') validateForm();
+      });
+      educationOther.addEventListener('input', () => {
+        if (educationSelect.value === 'Other') validateForm();
+      });
+
+      /* ── Alerts ─────────────────────────────────────────────── */
+      const showAlert = (message, tone) => {
+        const icons = { danger: 'bi-x-circle-fill', warning: 'bi-exclamation-triangle-fill', success: 'bi-check-circle-fill' };
+        alertEl.className = 'alert app-alert alert-' + tone + ' mt-3 mx-3 mb-0';
+        alertEl.innerHTML = '<i class="bi ' + (icons[tone] || icons.danger) + '" aria-hidden="true"></i><span>' + message + '</span>';
+        alertEl.classList.remove('d-none');
+        alertEl.focus();
+      };
+
+      const clearAlert = () => {
+        alertEl.className = 'alert app-alert d-none mt-3 mx-3 mb-0';
+        alertEl.innerHTML = '';
+      };
+
+      /* ── Submit flow ────────────────────────────────────────── */
+      let submitting = false;
+
+      const setLoading = (loading) => {
+        submitting = loading;
+        submitBtn.disabled = loading;
+        resetBtn.disabled = loading;
+        submitBtn.innerHTML = loading
+          ? '<span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Submitting…'
+          : '<i class="bi bi-send me-1" aria-hidden="true"></i>Submit Application';
+      };
+
+      const buildPayload = () => ({
+        studentName: document.getElementById('wa-name').value.trim(),
+        phone: document.getElementById('wa-phone').value.trim(),
+        email: document.getElementById('wa-email').value.trim(),
+        gender: document.getElementById('wa-gender').value,
+        countryInterested: document.getElementById('wa-country').value,
+        intake: document.getElementById('wa-intake').value,
+        highestEducation: educationSelect.value === 'Other'
+          ? (educationOther.value.trim() || 'Other')
+          : educationSelect.value,
+        collegeName: document.getElementById('wa-college').value.trim(),
+        passingYear: document.getElementById('wa-passing').value.trim(),
+        gpa: document.getElementById('wa-gpa').value.trim(),
+      });
+
+      const showThanks = (referenceId) => {
+        thanksRefEl.textContent = referenceId || '';
+        formEl.classList.add('d-none');
+        thanksEl.classList.remove('d-none');
+        clearAlert();
+        thanksTitleEl.focus();
+      };
+
+      const resetForm = () => {
+        formEl.reset();
+        clearAlert();
+        clearValidation();
+        hideDupPanel();
+        duplicateConfirmed = false;
+        educationOther.classList.add('d-none');
+        educationOther.value = '';
+        thanksEl.classList.add('d-none');
+        formEl.classList.remove('d-none');
+        setLoading(false);
+        document.getElementById('wa-name').focus();
+      };
+
+      resetBtn.addEventListener('click', resetForm);
+      againBtn.addEventListener('click', resetForm);
+
+      /* ── Reference ID copy ──────────────────────────────────── */
+      const flashCopy = () => {
+        copyBtn.innerHTML = '<i class="bi bi-check-lg me-1" aria-hidden="true"></i>Copied';
+        setTimeout(() => {
+          copyBtn.innerHTML = '<i class="bi bi-clipboard me-1" aria-hidden="true"></i>Copy';
+        }, 2000);
+      };
+
+      const fallbackCopy = (text) => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); flashCopy(); } catch (e) {}
+        document.body.removeChild(ta);
+      };
+
+      copyBtn.addEventListener('click', () => {
+        const text = thanksRefEl.textContent;
+        if (!text) return;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(flashCopy, () => fallbackCopy(text));
+        } else {
+          fallbackCopy(text);
+        }
+      });
+
+      /* ── Submit handler ─────────────────────────────────────── */
+      formEl.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (submitting) return;
+        clearAlert();
+        hideDupPanel();
+
+        const data = buildPayload();
+        const failed = validateForm();
+        if (failed.length) {
+          const first = document.getElementById(failed[0]);
+          if (first) {
+            first.focus();
+            first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          return;
+        }
+
+        // Pre-check duplicates (server remains authoritative on POST).
+        if (!duplicateConfirmed) {
+          const dup = await checkDuplicate();
+          if (dup && dup.exists) {
+            showDupNotes(dup.matchedBy);
+            showDupPanel();
+            return;
+          }
+        }
+
+        setLoading(true);
+        try {
+          const payload = duplicateConfirmed ? Object.assign({}, data, { confirmDuplicate: true }) : data;
+          const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          const json = await res.json().catch(() => ({}));
+
+          if (res.ok) {
+            const lead = json && json.data ? json.data.lead : null;
+            formEl.reset();
+            showThanks(lead ? lead.referenceId : '');
+            return;
+          }
+
+          if (res.status === 409 && json && json.code === 'DUPLICATE_LEAD') {
+            if (!duplicateConfirmed) {
+              showDupPanel();
+            } else {
+              // Server still reports a duplicate after explicit confirmation
+              // (e.g. created in another tab just now) — final message, not an error.
+              duplicateConfirmed = false;
+              showAlert('This enquiry already exists in our system. Our counsellors will reach out to you shortly.', 'warning');
+            }
+            return;
+          }
+
+          showAlert(json && json.message ? json.message : 'Could not submit your details. Please try again.', 'danger');
+        } catch (err) {
+          showAlert('Network error — please check your connection and try again.', 'danger');
+        } finally {
+          setLoading(false);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

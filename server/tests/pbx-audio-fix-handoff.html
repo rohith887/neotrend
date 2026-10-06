@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>No-Audio Root Cause</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #faf8f3;
+    --paper-raised: #ffffff;
+    --ink: #211f1c;
+    --ink-soft: #5a5650;
+    --ink-faint: #8b8578;
+    --line: #ddd7c8;
+    --line-strong: #c7bfa9;
+    --signal: #0f6e64;
+    --signal-soft: #e3efec;
+    --signal-ink: #0a4b44;
+    --fault: #b0501a;
+    --fault-soft: #fbeade;
+    --fault-strong: #8a3c11;
+    --ok: #2f7a3d;
+    --code-bg: #1c1b17;
+    --code-ink: #e9e4d6;
+    --code-muted: #8a8574;
+    --code-fault: #ff9f5a;
+    --code-fault-bg: #3a2413;
+    --shadow: 0 1px 2px rgba(33,31,28,0.04), 0 8px 24px -12px rgba(33,31,28,0.10);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #161512;
+      --paper-raised: #1e1d19;
+      --ink: #efeadf;
+      --ink-soft: #b6b0a0;
+      --ink-faint: #837e70;
+      --line: #37352c;
+      --line-strong: #47443878;
+      --signal: #4bc0b1;
+      --signal-soft: #16302c;
+      --signal-ink: #8fdccf;
+      --fault: #ff9f5a;
+      --fault-soft: #33200f;
+      --fault-strong: #ffb885;
+      --ok: #6fbf7a;
+      --code-bg: #0e0d0b;
+      --code-ink: #e9e4d6;
+      --code-muted: #726d5f;
+      --code-fault: #ff9f5a;
+      --code-fault-bg: #3a2413;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #161512;
+    --paper-raised: #1e1d19;
+    --ink: #efeadf;
+    --ink-soft: #b6b0a0;
+    --ink-faint: #837e70;
+    --line: #37352c;
+    --line-strong: #474438;
+    --signal: #4bc0b1;
+    --signal-soft: #16302c;
+    --signal-ink: #8fdccf;
+    --fault: #ff9f5a;
+    --fault-soft: #33200f;
+    --fault-strong: #ffb885;
+    --ok: #6fbf7a;
+    --code-bg: #0e0d0b;
+    --code-ink: #e9e4d6;
+    --code-muted: #726d5f;
+    --code-fault: #ff9f5a;
+    --code-fault-bg: #3a2413;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+    font-size: 16.5px;
+    line-height: 1.65;
+    padding-inline: 20px;
+    padding-block: max(28px, env(safe-area-inset-top, 0px)) max(48px, env(safe-area-inset-bottom, 0px));
+  }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+
+  .sheet {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ───────────────────────────────────────────────── */
+  .doc-head {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 30px;
+  }
+  .doc-kicker {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .doc-kicker .tag {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--fault-strong);
+    background: var(--fault-soft);
+    border: 1px solid var(--fault);
+    border-radius: 999px;
+    padding: 4px 11px 4px 9px;
+  }
+  .status-pill::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--fault);
+    flex-shrink: 0;
+  }
+  h1 {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: clamp(26px, 5.5vw, 34px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .doc-sub {
+    font-family: "IBM Plex Serif", serif;
+    font-style: italic;
+    font-size: 16.5px;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 62ch;
+  }
+  .doc-meta {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+  .doc-meta strong { color: var(--ink-soft); font-weight: 500; }
+
+  /* ── Section rhythm ───────────────────────────────────────── */
+  section { margin-bottom: 34px; }
+  .section-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-ink);
+    margin: 0 0 10px;
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+  }
+  .section-label::before {
+    content: "";
+    width: 16px;
+    height: 1.5px;
+    background: var(--signal);
+    display: inline-block;
+  }
+  h2 {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 19px;
+    font-weight: 600;
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+  p { margin: 0 0 14px; max-width: 66ch; }
+  p:last-child { margin-bottom: 0; }
+  .lede { font-size: 17.5px; color: var(--ink); }
+
+  code, .mono { font-family: "IBM Plex Mono", monospace; font-size: 0.92em; }
+  .inline-code {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.87em;
+    background: var(--signal-soft);
+    color: var(--signal-ink);
+    padding: 1.5px 5px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .inline-code.fault { background: var(--fault-soft); color: var(--fault-strong); }
+
+  /* ── Symptom / cause cards ────────────────────────────────── */
+  .pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 4px;
+  }
+  @media (max-width: 560px) { .pair { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 17px;
+    box-shadow: var(--shadow);
+  }
+  .card .k {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 7px;
+  }
+  .card .v { font-family: "IBM Plex Serif", serif; font-size: 15px; color: var(--ink); }
+  .card.ok { border-left: 3px solid var(--ok); }
+  .card.fault-card { border-left: 3px solid var(--fault); }
+
+  /* ── Evidence terminal block ─────────────────────────────── */
+  .evidence {
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-top: 4px;
+  }
+  .evidence-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 14px;
+    border-bottom: 1px solid #33312a;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    color: var(--code-muted);
+  }
+  .evidence-head .cmd { color: #b9d9d2; }
+  .evidence pre {
+    margin: 0;
+    padding: 14px 16px 16px;
+    overflow-x: auto;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    line-height: 1.62;
+    tab-size: 2;
+  }
+  .evidence .dim { color: var(--code-muted); }
+  .evidence .flag {
+    background: var(--code-fault-bg);
+    color: var(--code-fault);
+    display: inline-block;
+    width: 100%;
+    border-radius: 3px;
+    padding: 0 4px;
+    margin: 0 -4px;
+  }
+  .flag-tag {
+    float: right;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--code-fault);
+    opacity: 0.85;
+  }
+
+  /* ── Fix table ────────────────────────────────────────────── */
+  .fixlist { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .fixrow {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 12px;
+    align-items: start;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 13px 15px;
+    box-shadow: var(--shadow);
+  }
+  .fixrow .num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--signal);
+    background: var(--signal-soft);
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .fixrow .where {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .fixrow .what { font-family: "IBM Plex Serif", serif; font-size: 15px; }
+  .fixrow .setting {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    background: var(--signal-soft);
+    color: var(--signal-ink);
+    border-radius: 5px;
+    padding: 2px 7px;
+    margin-top: 6px;
+  }
+
+  /* ── Verify block ─────────────────────────────────────────── */
+  .verify {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--signal-soft);
+    border: 1px solid var(--signal);
+    border-radius: 10px;
+    padding: 15px 16px;
+  }
+  .verify .glyph {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 15px;
+    color: var(--signal-ink);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .verify p { margin: 0; color: var(--signal-ink); max-width: none; }
+  .verify .inline-code { background: rgba(255,255,255,0.5); }
+  :root:not([data-theme="light"]) .verify .inline-code,
+  :root[data-theme="dark"] .verify .inline-code { background: rgba(0,0,0,0.25); }
+
+  footer {
+    margin-top: 44px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    color: var(--ink-faint);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="doc-head">
+    <div class="doc-kicker">
+      <span class="tag">TASA CRM · Telephony Integration</span>
+      <span class="status-pill">Audio path broken</span>
+    </div>
+    <h1>No audio on browser softphone calls</h1>
+    <p class="doc-sub">SIP signaling works correctly and ICE IS being negotiated — but every ICE candidate Asterisk offers is a private LAN address. No browser outside those subnets can ever complete a media connection. CRM-side WebRTC code has been independently reviewed and is not the cause.</p>
+    <div class="doc-meta">
+      <span><strong>PBX</strong> sip.grcti.com · FPBX-17.0.33 (Asterisk 20.21.0)</span>
+      <span><strong>Extension tested</strong> 1006 → echo test <code class="mono">*43</code></span>
+      <span><strong>Captured</strong> fresh live SIP/SDP trace, re-run today — not the original stale capture</span>
+    </div>
+  </header>
+
+  <section>
+    <p class="lede">This supersedes the original version of this document, whose "no ICE candidates at all" finding is <strong>no longer accurate</strong> — ICE has since been at least partly enabled. Re-running the same diagnostic against the live PBX today shows ICE negotiation happening, but every candidate Asterisk offers is still unreachable from outside its own LAN, which produces the identical symptom: signaling connects, audio never flows.</p>
+  </section>
+
+  <section>
+    <p class="section-label">Symptom vs. cause</p>
+    <div class="pair">
+      <div class="card ok">
+        <span class="k">Confirmed working</span>
+        <span class="v">REGISTER, INVITE, 200&nbsp;OK all exchange correctly over <code class="mono">wss://sip.grcti.com/ws</code>. The CRM browser client correctly gathers its own public server-reflexive (srflx) ICE candidate via STUN (verified live) — the client is not misconfigured.</span>
+      </div>
+      <div class="card fault-card">
+        <span class="k">Confirmed broken</span>
+        <span class="v">Asterisk's SDP answer offers <em>only</em> private LAN candidates — no public/srflx candidate of its own. A browser on the public internet has nothing reachable to connect to.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Evidence — captured fresh, today</p>
+    <h2>Call to the built-in Echo Test (*43)</h2>
+    <p>Placed with a real registered extension (1006), same WSS endpoint the browser softphone uses. No real phone rang. This is the exact 200&nbsp;OK SDP body Asterisk answered with, byte-for-byte from today's run of <code class="mono">tests/diag-sip-audio-sdp.mjs</code>:</p>
+    <div class="evidence">
+      <div class="evidence-head">
+        <span class="cmd">$ node tests/diag-sip-audio-sdp.mjs</span>
+        <span>200 OK · Server: FPBX-17.0.33(20.21.0)</span>
+      </div>
+      <pre><span class="dim">v=0</span>
+<span class="dim">o=- 0 2 IN IP4 172.16.10.101</span>
+<span class="dim">s=Asterisk</span>
+<span class="flag">c=IN IP4 172.16.10.101<span class="flag-tag">private LAN, not public</span></span>
+<span class="dim">t=0 0</span>
+<span class="dim">m=audio 18832 UDP/TLS/RTP/SAVPF 0 8 101</span>
+<span class="dim">a=setup:active</span>
+<span class="dim">a=fingerprint:SHA-256 28:6D:2D:B8:C6:81:7B:4E:45:3D:...</span>
+<span class="dim">a=ice-ufrag:38dd80b0504ebace5458182a60a310c7</span>
+<span class="dim">a=ice-pwd:4f100e9a7ce148f65d3c4f09332832e5</span>
+<span class="flag">a=candidate:Haf004da 1 UDP 2130706431 10.240.4.218 18832 typ host<span class="flag-tag">private, subnet #2</span></span>
+<span class="flag">a=candidate:Hac100a65 1 UDP 2130706431 172.16.10.101 18832 typ host<span class="flag-tag">private, subnet #1</span></span>
+<span class="dim">a=rtpmap:0 PCMU/8000</span>
+<span class="dim">a=rtpmap:8 PCMA/8000</span>
+<span class="dim">a=sendrecv</span>
+<span class="dim">a=rtcp-mux</span>
+<span class="flag">— no typ srflx / typ relay candidate anywhere in the answer —<span class="flag-tag">no public candidate</span></span></pre>
+    </div>
+    <p style="margin-top:12px">Two things this proves, precisely:</p>
+    <div class="pair">
+      <div class="card fault-card">
+        <span class="k">ICE is running, but incompletely</span>
+        <span class="v"><code class="mono">ice-ufrag</code>/<code class="mono">ice-pwd</code> and two <code class="mono">typ host</code> candidates ARE present — ICE support is at least partially on. But Asterisk never performs its own STUN/NAT reflexive discovery, so it never offers a <code class="mono">typ srflx</code> candidate pointing at its real public IP.</span>
+      </div>
+      <div class="card fault-card">
+        <span class="k">Two different private subnets, neither public</span>
+        <span class="v">The two host candidates come from two different private interfaces — <code class="mono">172.16.10.0/24</code> and <code class="mono">10.240.4.0/24</code>. Whatever machine/container Asterisk's media (RTP) engine is bound to, it has interfaces on both, and advertises both, but never its actual internet-facing address.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">What the PBX administrator needs to check</p>
+    <h2>PJSIP WebRTC transport (the one bound to the WSS listener) + RTP/NAT config</h2>
+    <p>These are investigation items, not assumed values — the previous version of this document guessed a specific public IP (<code class="mono">118.185.152.22</code>) and that guess should <strong>not</strong> be trusted or reused without confirming it against the PBX's actual current network config.</p>
+    <div class="fixlist">
+      <div class="fixrow">
+        <span class="num">1</span>
+        <div>
+          <span class="where">Server / network config, not FreePBX GUI</span>
+          <span class="what">Confirm the PBX's actual current public IP address (the one the internet reaches it on today). Do not assume the value from any prior document.</span>
+        </div>
+      </div>
+      <div class="fixrow">
+        <span class="num">2</span>
+        <div>
+          <span class="where">FreePBX → Settings → Asterisk SIP Settings → NAT Settings, or the pjsip transport config directly (the transport bound to the WSS listener)</span>
+          <span class="what">Check whether <code class="mono">external_media_address</code> is set at all, and if so, whether it matches the confirmed public IP from step 1.</span>
+          <span class="setting">external_media_address</span>
+        </div>
+      </div>
+      <div class="fixrow">
+        <span class="num">3</span>
+        <div>
+          <span class="where">Same transport block</span>
+          <span class="what">Check whether <code class="mono">external_signaling_address</code> is set and matches the same confirmed public IP.</span>
+          <span class="setting">external_signaling_address</span>
+        </div>
+      </div>
+      <div class="fixrow">
+        <span class="num">4</span>
+        <div>
+          <span class="where">Same transport block</span>
+          <span class="what">Check <code class="mono">local_net</code> — today's evidence shows Asterisk's media engine spans <em>two</em> private subnets, so if this is configured at all, confirm both are listed, not just one.</span>
+          <span class="setting">local_net = 172.16.10.0/24<br/>local_net = 10.240.4.0/24</span>
+        </div>
+      </div>
+      <div class="fixrow">
+        <span class="num">5</span>
+        <div>
+          <span class="where">Extension template / endpoint used by 1000–1999, Advanced/WebRTC tab</span>
+          <span class="what">Confirm <code class="mono">ice_support</code> is actually <code class="mono">yes</code> (today's evidence suggests it likely already is, since ICE attributes ARE present — verify rather than assume).</span>
+          <span class="setting">ice_support</span>
+        </div>
+      </div>
+      <div class="fixrow">
+        <span class="num">6</span>
+        <div>
+          <span class="where"><code class="mono">rtp.conf</code> (some FreePBX versions keep a second copy of steps 2–4 here)</span>
+          <span class="what">Confirm the RTP layer's own <code class="mono">icesupport</code> / <code class="mono">externaddr</code> / <code class="mono">localnet</code> agree with whatever is found in steps 2–5. Mismatches between pjsip.conf-level and rtp.conf-level settings are a common cause of exactly this symptom.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Verify the fix</p>
+    <div class="verify">
+      <span class="glyph">▸</span>
+      <p>After applying and reloading PJSIP (<span class="inline-code">core reload</span> or <span class="inline-code">pjsip reload</span>), re-run <span class="inline-code">node tests/diag-sip-audio-sdp.mjs</span> from the CRM server. The 200&nbsp;OK should now include a <span class="inline-code">typ srflx</span> (or a host candidate carrying the confirmed public IP) in addition to the existing private ones. If a publicly-reachable candidate is present, the browser softphone should get two-way audio — confirm with a real test call afterward, not just the SDP trace.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>tests/diag-sip-audio-sdp.mjs · read-only, echo-test only</span>
+    <span>No PBX configuration changed by this diagnostic or this document</span>
+  </footer>
+
+</div>
+</body>
+</html>
